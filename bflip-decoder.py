@@ -14,7 +14,7 @@ def test_mode():
     iv = os.urandom(iv_length)
     aes = AES.new(key, AES.MODE_CBC, iv)
 
-    kp = "logged_username=admin&password=super_secret_pwd"   # known plaintext
+    gp = "logged_username=admin&password=super_secret_pwd"   # known plaintext
     tp = "logged_username=bdmin&password=super_secret_pwd"   # test plaintext (changed 'admin' to 'bdmin')
     ciphertext = aes.encrypt(pad(tp))                  # known ciphertext
 
@@ -25,7 +25,7 @@ def test_mode():
 
     print("\nOriginal random iv:      " + iv.encode("hex"))
     print("Original random key:     " + key.encode("hex"))
-    print("Original message:        " + kp)
+    print("Original/Goal message:   " + gp)
     print("Original AES ciphertext: " + ciphertext.encode("hex"))
     print("Flipped ciphertext:      " + flipped_ciphertext.encode("hex"))
     print("\nMessage decrypted from flipped ciphertext: " + decrypted_msg)
@@ -54,3 +54,4 @@ if __name__ == "__main__":
         print("[2] position in goal plaintext that you need to change")
         print("[3] char that you want to use to replace original")
     main(sys.argv[1:])
+    test_mode()
