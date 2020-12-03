@@ -14,8 +14,8 @@ def test_mode():
     iv = os.urandom(iv_length)
     aes = AES.new(key, AES.MODE_CBC, iv)
 
-    kp = "logged_username=admin&password=g0ld3n_b0y"   # known plaintext
-    tp = "logged_username=bdmin&password=g0ld3n_b0y"   # test plaintext (changed 'admin' to 'bdmin')
+    kp = "logged_username=admin&password=super_secret_pwd"   # known plaintext
+    tp = "logged_username=bdmin&password=super_secret_pwd"   # test plaintext (changed 'admin' to 'bdmin')
     ciphertext = aes.encrypt(pad(tp))                  # known ciphertext
 
     flipped_iv_char = chr(ord(ciphertext[0]) ^ ord("a") ^ ord("b"))
