@@ -54,4 +54,3 @@ if __name__ == "__main__":
         print("[2] position in goal plaintext that you need to change")
         print("[3] char that you want to use to replace original")
     main(sys.argv[1:])
-    test_mode()
