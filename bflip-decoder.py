@@ -16,7 +16,7 @@ def test_mode():
 
     gp = "logged_username=admin&password=super_secret_pwd"   # known plaintext
     tp = "logged_username=bdmin&password=super_secret_pwd"   # test plaintext (changed 'admin' to 'bdmin')
-    ciphertext = aes.encrypt(pad(tp))                  # known ciphertext
+    ciphertext = aes.encrypt(pad(tp))                        # ciphertext resulting from AES encryption
 
     flipped_iv_char = chr(ord(ciphertext[0]) ^ ord("a") ^ ord("b"))
     flipped_ciphertext = flipped_iv_char + ciphertext[1:]
