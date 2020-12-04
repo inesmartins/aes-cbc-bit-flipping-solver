@@ -14,7 +14,7 @@ def test_mode():
     iv = os.urandom(iv_length)
     aes = AES.new(key, AES.MODE_CBC, iv)
 
-    gp = "logged_username=admin&password=super_secret_pwd"   # known plaintext
+    kp = "logged_username=admin&password=super_secret_pwd"   # known plaintext
     tp = "logged_username=bdmin&password=super_secret_pwd"   # test plaintext (changed 'admin' to 'bdmin')
     ciphertext = aes.encrypt(pad(tp))                        # ciphertext resulting from AES encryption
 
@@ -25,7 +25,7 @@ def test_mode():
 
     print("\nOriginal random iv:      " + iv.encode("hex"))
     print("Original random key:     " + key.encode("hex"))
-    print("Original/Goal message:   " + gp)
+    print("Original/Goal message:   " + kp)
     print("Original AES ciphertext: " + ciphertext.encode("hex"))
     print("Flipped ciphertext:      " + flipped_ciphertext.encode("hex"))
     print("\nMessage decrypted from flipped ciphertext: " + decrypted_msg)
@@ -33,12 +33,12 @@ def test_mode():
 def main(argv):
     try:
         kc = argv[0].decode("hex")   # known ciphertext in hex format
-        gp = argv[1]                 # goal plaintext
-        pp = int(argv[2])            # position in goal plaintext that you need to change
-        test_char = argv[3]          # char that you want to use to replace original
+        kp = argv[1]                 # known plaintext
+        char_index = int(argv[2])    # index of the char you need to change in the known plaintext
+        test_char = argv[3]          # char that you want to use to replace the original with
 
-        original_char = gp[pp]
-        pos_in_iv = pp % iv_length % 1 * iv_length
+        original_char = kp[char_index]
+        pos_in_iv = char_index % iv_length % 1 * iv_length
         flipped_iv_char = chr(ord(kc[pos_in_iv]) ^ ord(original_char) ^ ord(test_char))
         flipped_ciphertext = (kc[:pos_in_iv] + flipped_iv_char + kc[pos_in_iv+1:]).encode("hex")
         print("Result: " + flipped_ciphertext)
@@ -50,7 +50,7 @@ if __name__ == "__main__":
     if len(sys.argv) < 4:
         print("Please specify the following arguments:")
         print("[0] known ciphertext in hex format")
-        print("[1] goal plaintext")
-        print("[2] position in goal plaintext that you need to change")
-        print("[3] char that you want to use to replace original")
+        print("[1] known plaintext")
+        print("[2] index of the char you need to change in the known plaintext")
+        print("[3] char that you want to use to replace the original with")
     main(sys.argv[1:])
