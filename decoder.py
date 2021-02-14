@@ -52,7 +52,7 @@ parser.add_argument('-c', '--char',
 args = parser.parse_args()
 
 kc = args.kc.decode("hex")   # known ciphertext in hex format
-kp = args.p                  # known plaintext
+kp = args.kp                 # known plaintext
 char_index = args.index      # index of the char you need to change in the known plaintext
 test_char = args.char[0]     # char that you want to use to replace the original with
 
