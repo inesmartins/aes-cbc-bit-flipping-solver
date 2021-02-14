@@ -28,4 +28,6 @@ python decoder.py -k "d524b1d6c2485db9b4917c2f1cf4a8b29dfd098a859b8735807a4852bc
                   -p "logged_username=admin&password=super_secret_pwd" 
                   -i 16 
                   -c "b"
+
+> Result: d624b1d6c2485db9b4917c2f1cf4a8b29dfd098a859b8735807a4852bc36b0f8d54546428fc9391fbbfed2d39318c5f3
 ```
