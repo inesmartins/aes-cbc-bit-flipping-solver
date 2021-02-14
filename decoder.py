@@ -1,5 +1,6 @@
 import os
 import sys
+import argparse
 from Crypto.Cipher import AES
 
 iv_length = 16
@@ -30,27 +31,33 @@ def test_mode():
     print("Flipped ciphertext:      " + flipped_ciphertext.encode("hex"))
     print("\nMessage decrypted from flipped ciphertext: " + decrypted_msg)
 
-def main(argv):
-    try:
-        kc = argv[0].decode("hex")   # known ciphertext in hex format
-        kp = argv[1]                 # known plaintext
-        char_index = int(argv[2])    # index of the char you need to change in the known plaintext
-        test_char = argv[3]          # char that you want to use to replace the original with
+# parses arguments
+parser = argparse.ArgumentParser(description='AES-CBC Bit Flipping Solver')
+parser.add_argument('-k', '--known-ciphertext', 
+					dest='kc', 
+					help='Known ciphertext in hex format', 
+					type=str, required=True)
+parser.add_argument('-p', '--known-plaintext', 
+					dest='kp', 
+					help='Known plaintext', 
+					type=str, required=True)
+parser.add_argument('-i', '--index', 
+					dest='index', 
+					help='Index of char you need to change in the known plaintext', 
+					type=int, required=True)
+parser.add_argument('-c', '--char', 
+					dest='char', 
+					help='Char that you want to replace the original with', 
+					type=str, required=True)
+args = parser.parse_args()
 
-        original_char = kp[char_index]
-        pos_in_iv = char_index % iv_length % 1 * iv_length
-        flipped_iv_char = chr(ord(kc[pos_in_iv]) ^ ord(original_char) ^ ord(test_char))
-        flipped_ciphertext = (kc[:pos_in_iv] + flipped_iv_char + kc[pos_in_iv+1:]).encode("hex")
-        print("Result: " + flipped_ciphertext)
+kc = args.kc.decode("hex")   # known ciphertext in hex format
+kp = args.p                  # known plaintext
+char_index = args.index      # index of the char you need to change in the known plaintext
+test_char = args.char[0]     # char that you want to use to replace the original with
 
-    except(Exception):
-        print("Invalid params")
-
-if __name__ == "__main__":
-    if len(sys.argv) < 4:
-        print("Please specify the following arguments:")
-        print("[0] known ciphertext in hex format")
-        print("[1] known plaintext")
-        print("[2] index of the char you need to change in the known plaintext")
-        print("[3] char that you want to use to replace the original with")
-    main(sys.argv[1:])
+original_char = kp[char_index]
+pos_in_iv = char_index % iv_length % 1 * iv_length
+flipped_iv_char = chr(ord(kc[pos_in_iv]) ^ ord(original_char) ^ ord(test_char))
+flipped_ciphertext = (kc[:pos_in_iv] + flipped_iv_char + kc[pos_in_iv+1:]).encode("hex")
+print("Result: " + flipped_ciphertext)
